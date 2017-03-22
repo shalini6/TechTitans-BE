@@ -1,0 +1,3 @@
+class Institution < ApplicationRecord
+	has_secure_password
+end
