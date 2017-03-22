@@ -29,6 +29,8 @@ gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
 gem 'angularjs-rails'
 gem 'angular-ui-bootstrap-rails'
+gem 'bcrypt'
+gem 'curl'
 
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
