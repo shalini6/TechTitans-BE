@@ -13,8 +13,8 @@
 ActiveRecord::Schema.define(version: 20170321181333) do
 
   create_table "patients", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
-    t.string   "fn",         limit: 50,  null: false
-    t.string   "ln",         limit: 50,  null: false
+    t.string   "first_name", limit: 50,  null: false
+    t.string   "last_name",  limit: 50,  null: false
     t.string   "mobile",     limit: 10,  null: false
     t.string   "password",   limit: 40
     t.string   "gender",     limit: 1

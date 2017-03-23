@@ -1,47 +1,52 @@
 class PatientsController < ApplicationController
+
+  before_action :set_patient, only: [:show, :update, :destroy]
+
+  # GET /patient
+  def show
+    render json: @patient
+  end
+
+  # get patients
   def index
-    @patients = patient.all
-    respond_with(@patients) do |f|
-      f.json{ render :json => @patients.as_json}
-      f.html
+    @patients = Patient.all
+
+    render json: @patients
   end
 
-  def new
-    @patient = Patient.new(patient_params)
-  end
-
+  # POST /patient
   def create
     @patient = Patient.new(patient_params)
+
     if @patient.save
-      flash[:notice] = "Patient registered successfully"
+      render json: @patient, status: :created
     else
-      render('new')
+      render json: @patient.errors, status: :unprocessable_entity
+    end
   end
 
-  def show
-    @patient = Patient.find(params[:id])
-  end
-
-  def edit
-    @patient = Patient.find(params[:id])
-  end
-
+  # PATCH/PUT /patient
   def update
-    @patient = Patient.find(params[:id])
-    if @patient.update_attributes(patient_params)
-      flash[:notice] = "Details updated"
-      redirect_to(:action => 'show', :id => @patient.id)
+    if @patient.update(patient_params)
+      render json: @patient
     else
-      render('edit')
+      render json: @patient.errors, status: :unprocessable_entity
+    end
   end
 
-  def delete
-    @patient =Patient.find(params[:id])
-
-  end
-
+  # DELETE /patient
   def destroy
-    patient = Patient.find(params[:id].destroy)
-    flash[:notice] = "Patient '#{patient.fn}' destroyed"
+    @patient.destroy
   end
+
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_patient
+      @patient = Patient.find(params[:id])
+    end
+
+    # Only allow a trusted parameter "white list" through.
+    def patient_params
+      params.fetch(:patient, {})
+    end
 end

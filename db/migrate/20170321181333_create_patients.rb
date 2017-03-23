@@ -1,8 +1,8 @@
 class CreatePatients < ActiveRecord::Migration[5.0]
   def up
     create_table :patients do |t|
-    	t.string "fn", :limit => 50, :null => false
-    	t.string "ln", :limit => 50, :null => false
+    	t.string "first_name", :limit => 50, :null => false
+    	t.string "last_name", :limit => 50, :null => false
     	t.string "mobile", :limit =>10, :null => false
     	t.string "password", :limit =>40
     	t.string "gender", :limit =>1
