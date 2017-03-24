@@ -41,6 +41,21 @@ ActiveRecord::Schema.define(version: 20170323081855) do
     t.string   "discipline"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
-  end
 
+  create_table "patients", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.string   "first_name", limit: 50,  null: false
+    t.string   "last_name",  limit: 50,  null: false
+    t.string   "mobile",     limit: 10,  null: false
+    t.string   "password",   limit: 40
+    t.string   "gender",     limit: 1
+    t.date     "dob"
+    t.string   "address",    limit: 150
+    t.string   "b_grp",      limit: 2
+    t.string   "email",      limit: 100
+    t.string   "aadhar",     limit: 12
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.index ["email"], name: "index_patients_on_email", using: :btree
+    t.index ["mobile"], name: "index_patients_on_mobile", using: :btree
+  end
 end
