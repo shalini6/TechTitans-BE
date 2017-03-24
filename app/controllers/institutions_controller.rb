@@ -1,16 +1,21 @@
 class InstitutionsController < ApplicationController
   before_action :set_institution, only: [:show, :update, :destroy]
+  wrap_parameters format: [:json], include: Institution.attribute_names + [:password, :password_confirmation]
 
   # GET /institutions
   def index
     @institutions = Institution.all
-
-    render json: @institutions
+    response = []
+    @institutions.each do |institute|
+      response << institute.get_details
+    end
+    render json: response
   end
 
   # GET /institutions/1
   def show
-    render json: @institution
+    response = @institution.get_details
+    render json: response
   end
 
   # POST /institutions
@@ -18,7 +23,7 @@ class InstitutionsController < ApplicationController
     @institution = Institution.new(institution_params)
 
     if @institution.save
-      render json: @institution, status: :created, location: @institution
+      render json: @institution, status: :created
     else
       render json: @institution.errors, status: :unprocessable_entity
     end
@@ -46,6 +51,6 @@ class InstitutionsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def institution_params
-      params.fetch(:institution, {})
+      params.fetch(:institution, {}).permit(:password, :password_confirmation, :name, :about, :photo, :fee)
     end
 end
