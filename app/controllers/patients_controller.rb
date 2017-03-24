@@ -1,6 +1,6 @@
 class PatientsController < ApplicationController
-
   before_action :set_patient, only: [:show, :update, :destroy]
+  wrap_parameters format: [:json], include: Patient.attribute_names + [:password, :password_confirmation]
 
   # GET /patient
   def show
@@ -47,6 +47,6 @@ class PatientsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def patient_params
-      params.fetch(:patient, {})
+      params.fetch(:patient, {}).permit(:first_name, :last_name, :mobile, :password, :gender, :dob, :address, :b_grp, :email, :aadhar, :password, :password_confirmation)
     end
 end
