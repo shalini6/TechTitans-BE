@@ -1,3 +1,3 @@
 class Speciality < ApplicationRecord
-	belongs_to :institution
+  belongs_to :institution
 end

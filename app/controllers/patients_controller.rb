@@ -40,13 +40,14 @@ class PatientsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_patient
-      @patient = Patient.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def patient_params
-      params.fetch(:patient, {}).permit(:first_name, :last_name, :mobile, :password, :gender, :dob, :address, :b_grp, :email, :aadhar, :password, :password_confirmation)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_patient
+    @patient = Patient.find(params[:id])
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def patient_params
+    params.fetch(:patient, {}).permit(:first_name, :last_name, :mobile, :password, :gender, :dob, :address, :b_grp, :email, :aadhar, :password, :password_confirmation)
+  end
 end

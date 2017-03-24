@@ -15,8 +15,8 @@ module AyushBackend
       allow do
         origins '*'
         resource '*',
-          :headers => :any,
-          :methods => [:get, :post, :options, :delete, :put]
+                 headers: :any,
+                 methods: [:get, :post, :options, :delete, :put]
       end
     end
     config.autoload_paths += Dir[Rails.root.join('app', 'models', '*/')]

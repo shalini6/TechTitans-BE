@@ -4,14 +4,14 @@ class LocationsController < ApplicationController
 
   # GET /locations
   def index
-  	response = Location.uniq.pluck(:city, :state, :institution_id)
-  	render json: response
+    response = Location.uniq.pluck(:city, :state, :institution_id)
+    render json: response
   end
 
   # GET /locations/1
   def show
-  	response = @institution.location
-  	render json: response
+    response = @institution.location
+    render json: response
   end
 
   # POST /locations
@@ -37,21 +37,21 @@ class LocationsController < ApplicationController
 
   # DELETE /locations/1
   # No need for this call
-  def destroy
-  end
+  def destroy; end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_institution
-      @institution = Institution.find(params[:institution_id])
-    end
 
-    def set_location
-      @location = Location.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_institution
+    @institution = Institution.find(params[:institution_id])
+  end
 
-    # Only allow a trusted parameter "white list" through.
-    def location_params
-      params.fetch(:location, {}).permit(:address, :city, :state, :pin)
-    end
+  def set_location
+    @location = Location.find(params[:id])
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def location_params
+    params.fetch(:location, {}).permit(:address, :city, :state, :pin)
+  end
 end

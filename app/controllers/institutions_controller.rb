@@ -44,13 +44,14 @@ class InstitutionsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_institution
-      @institution = Institution.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def institution_params
-      params.fetch(:institution, {}).permit(:password, :password_confirmation, :name, :about, :photo, :fee)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_institution
+    @institution = Institution.find(params[:id])
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def institution_params
+    params.fetch(:institution, {}).permit(:password, :password_confirmation, :name, :about, :photo, :fee)
+  end
 end
