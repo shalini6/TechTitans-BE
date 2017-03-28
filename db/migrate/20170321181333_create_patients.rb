@@ -1,5 +1,6 @@
 class CreatePatients < ActiveRecord::Migration[5.0]
-  def up
+  
+  def change
     create_table :patients do |t|
       t.string 'first_name'
       t.string 'last_name'
@@ -17,7 +18,5 @@ class CreatePatients < ActiveRecord::Migration[5.0]
     add_index('patients', 'mobile')
   end
 
-  def down
-    drop_table :patients
-  end
+  
 end
