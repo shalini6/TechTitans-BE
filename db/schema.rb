@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 20170328053301) do
 
-  create_table "appointments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "appointments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "patient_id"
     t.integer  "timeslot_id"
     t.time     "BeginTime"
@@ -25,29 +25,36 @@ ActiveRecord::Schema.define(version: 20170328053301) do
     t.index ["timeslot_id"], name: "index_appointments_on_timeslot_id", using: :btree
   end
 
-  create_table "clinical_services", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "clinicals", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "institution_id"
     t.string   "speciality_name"
     t.string   "doctor_id"
     t.string   "doctor_name"
     t.integer  "experience"
-    t.integer  "rating"
-    t.string   "discipline"
+    t.string   "department"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
   end
 
-  create_table "institutions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "diseases", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "name"
+    t.string "speciality"
+  end
+
+  create_table "institutions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
-    t.string   "about"
+    t.text     "about",           limit: 65535
     t.string   "photo"
-    t.integer  "fee"
     t.string   "password_digest"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.string   "email"
+    t.string   "website"
+    t.string   "contact_number"
+    t.integer  "rating"
   end
 
-  create_table "locations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "locations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "institution_id"
     t.string   "address"
     t.string   "city"
@@ -57,7 +64,11 @@ ActiveRecord::Schema.define(version: 20170328053301) do
     t.datetime "updated_at",     null: false
   end
 
-  create_table "patients", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "pathologies", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "name"
+  end
+
+  create_table "patients", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "first_name"
     t.string   "last_name"
     t.string   "mobile"
@@ -73,7 +84,18 @@ ActiveRecord::Schema.define(version: 20170328053301) do
     t.index ["mobile"], name: "index_patients_on_mobile", using: :btree
   end
 
-  create_table "timeslots", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "radiologies", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "name"
+  end
+
+  create_table "rates", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string  "service"
+    t.integer "service_id"
+    t.integer "institution_id"
+    t.integer "rate"
+  end
+
+  create_table "timeslots", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "institution_id"
     t.string   "service"
     t.integer  "service_id"
