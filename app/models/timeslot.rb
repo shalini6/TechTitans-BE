@@ -1,3 +1,3 @@
 class Timeslot < ApplicationRecord
-  belongs_to :institute
+  belongs_to :institution
 end

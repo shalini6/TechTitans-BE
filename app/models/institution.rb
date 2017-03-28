@@ -3,6 +3,8 @@ class Institution < ApplicationRecord
 
   has_one :location
   has_many :specialities
+  has_many :appointments
+  has_many :patients, through: :appointments
 
   def get_details
     details = {}
