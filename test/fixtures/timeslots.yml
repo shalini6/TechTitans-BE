@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  institute: one
+  service: 
+  service_id: 1
+  day: MyString
+  BeginTime: 2017-03-28 10:18:16
+  EndTime: 2017-03-28 10:18:16
+
+two:
+  institute: two
+  service: 
+  service_id: 1
+  day: MyString
+  BeginTime: 2017-03-28 10:18:16
+  EndTime: 2017-03-28 10:18:16

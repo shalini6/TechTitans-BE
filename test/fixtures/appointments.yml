@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  patient: one
+  timeslot: one
+  BeginTime: 2017-03-28 11:03:01
+  EndTime: 2017-03-28 11:03:01
+  date: 2017-03-28
+  mode: 
+
+two:
+  patient: two
+  timeslot: two
+  BeginTime: 2017-03-28 11:03:01
+  EndTime: 2017-03-28 11:03:01
+  date: 2017-03-28
+  mode: 
