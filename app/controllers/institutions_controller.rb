@@ -9,6 +9,7 @@ class InstitutionsController < ApplicationController
     @institutions.each do |institute|
       response << institute.get_details
     end
+    puts response
     render json: response
   end
 
