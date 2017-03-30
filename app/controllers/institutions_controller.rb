@@ -9,6 +9,7 @@ class InstitutionsController < ApplicationController
     @institutions.each do |institute|
       response << institute.get_details
     end
+    puts response
     render json: response
   end
 
@@ -52,6 +53,6 @@ class InstitutionsController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def institution_params
-    params.fetch(:institution, {}).permit(:password, :password_confirmation, :name, :about, :photo, :fee)
+    params.fetch(:institution, {}).permit(:password, :password_confirmation, :name, :about, :photo)
   end
 end
