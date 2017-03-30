@@ -22,8 +22,8 @@ private
  def array_day_to_string(day)
   days = ""
   day.each do |d|
-   if d == nil then days+=0
-   else days+=1
+   if d === nil then days += "0"
+   else days += "1"
    end
   end
   return days
