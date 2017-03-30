@@ -1,4 +1,4 @@
-  class ClinicalsController < ApplicationController
+class ClinicalsController < ApplicationController
   before_action :set_institution, only: [:create, :show]
   before_action :set_clinical, only: [:update]
 
@@ -41,7 +41,33 @@
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
+#Convert string to integer to store in backend
+def department_stoi(department)
+ case department 
+   when "AYURVEDIC" then dept = 0 
+   when "YOGA" then dept = 1
+   when "UNANI" then dept = 2
+   when "SIDDHA" then dept = 3
+   when "HOMEOPATHY" then dept =4
+  end
+ return dept
+end
+
+#Concert integer to string in frontend
+def department_itos(dept)
+ department = ""
+ case dept
+  when 0 then department = "AYURVEDIC"
+  when 1 then department = "YOGA"
+  when 2 then department = "UNANI"
+  when 3 then department = "SIDDHA"
+  when 4 then department = "HOMEOPATHY"
+ end
+return department
+end
+
+
+# Use callbacks to share common setup or constraints between actions.
   def set_institution
     @institution = Institution.find(params[:institution_id])
   end
