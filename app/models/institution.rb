@@ -8,8 +8,8 @@ class Institution < ApplicationRecord
 
   def get_details
     details = {}
-    details['institution'] = as_json
-    details['specialities'] = specialities
+    details['institution'] = self.as_json
+    details['clinicals'] = self.clinicals
     details['location'] = location
     details
   end

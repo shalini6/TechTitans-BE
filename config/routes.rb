@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resources :institutions do
     resources :locations
-    resources :specialities
+    resources :clinicals
   end
 
   resources :patients

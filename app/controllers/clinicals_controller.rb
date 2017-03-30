@@ -1,4 +1,4 @@
-class ClinicalsController < ApplicationController
+  class ClinicalsController < ApplicationController
   before_action :set_institution, only: [:create, :show]
   before_action :set_clinical, only: [:update]
 
