@@ -1,15 +1,23 @@
 class ClinicalsController < ApplicationController
-  before_action :set_institution, only: [:create, :show]
+  before_action :set_institution, only: [:create, :show, :index]
   before_action :set_clinical, only: [:update, :destroy]
 
   # GET /clinicals
   def index
-    tmp = Clinical.all
+    tmp = @institution.clinicals.select(:speciality_name).distinct
+    puts tmp.as_json
     response = []
     tmp.each do |clinical|
       obj = {}
       obj['speciality_name'] = clinical['speciality_name']
-      obj['doctors'] = clinical.as_json(except: [:created_at, :updated_at, ] )
+      doctors = []
+      Clinical.where(speciality_name: clinical['speciality_name'] ).each do |doc|
+        a = {}
+        a['doctor_name'] = doc['doctor_name']
+        a['department'] = doc['department']
+        doctors << a
+      end
+      obj['doctors'] = doctors
       response << obj
     end
     render json: response
