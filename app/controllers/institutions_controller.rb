@@ -53,6 +53,6 @@ class InstitutionsController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def institution_params
-    params.fetch(:institution, {}).permit(:password, :password_confirmation, :name, :about, :photo)
+    params.fetch(:institution, {}).permit(:password, :password_confirmation, :name, :about, :photo, :email, :contact_number, :website)
   end
 end

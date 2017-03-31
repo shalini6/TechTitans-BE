@@ -1,10 +1,25 @@
 class ClinicalsController < ApplicationController
-  before_action :set_institution, only: [:create, :show]
-  before_action :set_clinical, only: [:update]
+  before_action :set_institution, only: [:create, :show, :index]
+  before_action :set_clinical, only: [:update, :destroy]
 
   # GET /clinicals
   def index
-    response = Clinical.uniq.pluck(:clinical_name, :institution_id)
+    tmp = @institution.clinicals.select(:speciality_name).distinct
+    puts tmp.as_json
+    response = []
+    tmp.each do |clinical|
+      obj = {}
+      obj['speciality_name'] = clinical['speciality_name']
+      doctors = []
+      Clinical.where(speciality_name: clinical['speciality_name'] ).each do |doc|
+        a = {}
+        a['doctor_name'] = doc['doctor_name']
+        a['department'] = doc['department']
+        doctors << a
+      end
+      obj['doctors'] = doctors
+      response << obj
+    end
     render json: response
   end
 
@@ -16,14 +31,17 @@ class ClinicalsController < ApplicationController
 
   # POST /clinicals
   def create
-    @clinical = Clinical.new(clinical_params)
-    @institution.clinicals << @clinical
-
-    if @clinical.save
-      render json: @clinical, status: :created
-    else
-      render json: @clinical.errors, status: :unprocessable_entity
+    params[:services].each do |service|
+      service[:doctors].each do |obj|
+        @clinical = Clinical.new()
+        @clinical.speciality_name = service[:speciality_name]
+        @clinical.doctor_name = obj['doctor_name']
+        @clinical.department = obj['department']
+        @institution.clinicals << @clinical
+        @clinical.save
+      end
     end
+    render json: @institution.clinicals
   end
 
   # PATCH/PUT /clinicals/1
@@ -37,14 +55,16 @@ class ClinicalsController < ApplicationController
 
   # DELETE /clinicals/1
   # No need for this call
-  def destroy; end
+  def destroy
+    @clinical.destroy
+  end
 
   private
 
 #Convert string to integer to store in backend
 def department_stoi(department)
- case department 
-   when "AYURVEDIC" then dept = 0 
+ case department
+   when "AYURVEDIC" then dept = 0
    when "YOGA" then dept = 1
    when "UNANI" then dept = 2
    when "SIDDHA" then dept = 3
@@ -78,6 +98,6 @@ end
 
   # Only allow a trusted parameter "white list" through.
   def clinical_params
-    params.fetch(:clinical, {}).permit(:speciality_name, :doctor_name, :experience, :department)
+    params.fetch(:clinical, {}).permit(:speciality_name, :doctor_name, :department, services: [:speciality_name, :doctor_name, :department])
   end
 end
