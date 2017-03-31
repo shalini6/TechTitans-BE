@@ -1,6 +1,53 @@
 class TimeslotsController < ApplicationController
+before_action :set_timeslot, only: [:show, :update, :destroy]
 
+#GET /timeslots
+def show
+  render json: @timeslot
+end
+
+#GET timeslots
+def index
+  @timeslots = Timeslot.all
+  render json: @timeslots
+end
+
+
+#POST /timeslot
+def create
+ @timeslot = Timeslot.new(timeslot_params)
+
+   if @timeslot.save
+     render json: @timeslot, status: :created
+   else
+    render json: @timeslot.errors, status: :unprocessable_entity
+  end
+end  
+
+#PATCH/PUT /timeslot
+def update
+  if @timeslot.update(timeslot_params)
+    render json: @timeslot
+  else
+    render json: @timeslot.errors, status: :unprocessable_entity
+  end
+end
+
+def destroy
+  @timeslot.destroy
+end        
 private
+  # Use callbacks to share common setup or constraints between actions.
+  def set_timeslot
+    @timeslot = Timeslot.find(params[:id])
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def timeslot_params
+    params.fetch(:timeslot, {}).permit(:institution_id, :service, :service_id, :day, :BeginTime, :EndTime)
+  end
+
+
  def string_day_to_array(day)
   day = day.split('')
   days = []
