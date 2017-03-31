@@ -9,7 +9,7 @@ class ClinicalsController < ApplicationController
     tmp.each do |clinical|
       obj = {}
       obj['speciality_name'] = clinical['speciality_name']
-      obj['clinicals'] = clinical.as_json(except: [:created_at, :updated_at, ] )
+      obj['doctors'] = clinical.as_json(except: [:created_at, :updated_at, ] )
       response << obj
     end
     render json: response
@@ -23,15 +23,16 @@ class ClinicalsController < ApplicationController
 
   # POST /clinicals
   def create
-    params[:clinicals].each do |clinical|
-      @clinical = Clinical.new()
-      @clinical.speciality_name = clinical['speciality_name']
-      @clinical.doctor_name = clinical['doctor_name']
-      @clinical.department = clinical['department']
-      @institution.clinicals << @clinical
-      @clinical.save
+    params[:services].each do |service|
+      service[:doctors].each do |obj|
+        @clinical = Clinical.new()
+        @clinical.speciality_name = service[:speciality_name]
+        @clinical.doctor_name = obj['doctor_name']
+        @clinical.department = obj['department']
+        @institution.clinicals << @clinical
+        @clinical.save
+      end
     end
-
     render json: @institution.clinicals
   end
 
@@ -54,8 +55,8 @@ class ClinicalsController < ApplicationController
 
 #Convert string to integer to store in backend
 def department_stoi(department)
- case department 
-   when "AYURVEDIC" then dept = 0 
+ case department
+   when "AYURVEDIC" then dept = 0
    when "YOGA" then dept = 1
    when "UNANI" then dept = 2
    when "SIDDHA" then dept = 3
@@ -89,6 +90,6 @@ end
 
   # Only allow a trusted parameter "white list" through.
   def clinical_params
-    params.fetch(:clinical, {}).permit(:speciality_name, :doctor_name, :department, clinicals: [:speciality_name, :doctor_name, :department])
+    params.fetch(:clinical, {}).permit(:speciality_name, :doctor_name, :department, services: [:speciality_name, :doctor_name, :department])
   end
 end
