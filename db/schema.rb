@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170401201148) do
+ActiveRecord::Schema.define(version: 20170401215903) do
 
   create_table "appointments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "patient_id"
@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(version: 20170401201148) do
     t.datetime "updated_at",                null: false
     t.float    "latitude",       limit: 24
     t.float    "longitude",      limit: 24
+    t.float    "distance",       limit: 24
     t.index ["institution_id"], name: "index_filter_locations_on_institution_id", using: :btree
   end
 

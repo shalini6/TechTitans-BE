@@ -4,7 +4,7 @@ Geocoder.configure(
   lookup: :google,
 
   # geocoding service request timeout (in seconds)
-  timeout: 3,
+  timeout: 333,
 
   # default units
   units: :km

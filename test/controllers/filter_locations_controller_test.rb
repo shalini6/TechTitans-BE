@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class FilterLocationControllerTest < ActionDispatch::IntegrationTest
+class FilterLocationsControllerTest < ActionDispatch::IntegrationTest
   # test "the truth" do
   #   assert true
   # end
