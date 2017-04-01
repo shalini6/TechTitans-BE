@@ -18,19 +18,16 @@ class InstitutionsController < ApplicationController
     response = @institution.get_details
     render json: response
   end
-
-  def signup
-   
-
   # POST /institutions
   def create
     @institution = Institution.new(institution_params)
 
     if @institution.save
       render json: @institution, status: :created
-    else
-      render json: @institution.errors, status: :unprocessable_entity
+    else    
+     render json:  @institution.errors, status: :unprocessable_entity
     end
+ 
   end
 
   # PATCH/PUT /institutions/1
@@ -79,6 +76,6 @@ class InstitutionsController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def institution_params
-    params.fetch(:institution, {}).permit(:password, :password_confirmation, :name, :about, :photo, :email, :contact_number, :website)
+    params.fetch(:institution, {}).permit(:password, :password_confirmation, :name, :about, :photo, :email, :contact_number, :website, :user_id)
   end
 end

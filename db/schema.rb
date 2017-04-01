@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170401115714) do
+ActiveRecord::Schema.define(version: 20170401135157) do
 
   create_table "appointments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "patient_id"
@@ -57,6 +57,7 @@ ActiveRecord::Schema.define(version: 20170401115714) do
     t.string   "contact_number"
     t.integer  "rating"
     t.string   "user_id"
+    t.index ["user_id"], name: "index_institutions_on_user_id", unique: true, using: :btree
   end
 
   create_table "locations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -82,7 +83,7 @@ ActiveRecord::Schema.define(version: 20170401115714) do
     t.string   "aadhar"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
-    t.index ["mobile"], name: "index_patients_on_mobile", using: :btree
+    t.index ["mobile"], name: "index_patients_on_mobile", unique: true, using: :btree
   end
 
   create_table "rates", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
