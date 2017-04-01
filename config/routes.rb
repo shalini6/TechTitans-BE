@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
  resources :timeslots
 
-  resources :patients
+ resources :patients
+ get 'search/institutions', to: 'search#institutions'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
