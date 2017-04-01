@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  resources :institutions do
+  
+post '/signup', to: 'institutions#create' 
+resources :institutions do
   	get '/history' , to: 'institutions#history'
     resources :locations
     resources :clinicals

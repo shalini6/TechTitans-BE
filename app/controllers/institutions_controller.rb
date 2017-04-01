@@ -19,6 +19,9 @@ class InstitutionsController < ApplicationController
     render json: response
   end
 
+  def signup
+   
+
   # POST /institutions
   def create
     @institution = Institution.new(institution_params)
