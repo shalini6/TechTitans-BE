@@ -47,7 +47,7 @@ class PatientsController < ApplicationController
           d['status']=1
         elsif d['date']<Date.today 
           d['status']=0
-        elsif d['date']=Date.today and d['BeginTime'].strftime("%I:%M%p")>Time.now.strftime("%I:%M%p")
+        elsif d['date']=Date.today and d['BeginTime'].strftime("%H:%M:%S")>Time.now.strftime("%H:%M:%S")
           d['status']=1
         else
           d['status']=0

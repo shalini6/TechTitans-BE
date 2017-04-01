@@ -34,15 +34,6 @@ ActiveRecord::Schema.define(version: 20170331140124) do
     t.datetime "updated_at",      null: false
   end
 
-  create_table "conversations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "sender_id"
-    t.integer  "recipient_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
-    t.index ["recipient_id"], name: "index_conversations_on_recipient_id", using: :btree
-    t.index ["sender_id"], name: "index_conversations_on_sender_id", using: :btree
-  end
-
   create_table "diagnostics", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
     t.datetime "created_at", null: false
@@ -75,16 +66,6 @@ ActiveRecord::Schema.define(version: 20170331140124) do
     t.integer  "pin"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
-  end
-
-  create_table "messages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.text     "body",            limit: 65535
-    t.integer  "conversation_id"
-    t.integer  "user_id"
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
-    t.index ["conversation_id"], name: "index_messages_on_conversation_id", using: :btree
-    t.index ["user_id"], name: "index_messages_on_user_id", using: :btree
   end
 
   create_table "patients", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -124,17 +105,7 @@ ActiveRecord::Schema.define(version: 20170331140124) do
     t.index ["institution_id"], name: "index_timeslots_on_institution_id", using: :btree
   end
 
-  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string   "type"
-    t.integer  "uid"
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   add_foreign_key "appointments", "patients"
   add_foreign_key "appointments", "timeslots"
-  add_foreign_key "messages", "conversations"
-  add_foreign_key "messages", "users"
   add_foreign_key "timeslots", "institutions"
 end

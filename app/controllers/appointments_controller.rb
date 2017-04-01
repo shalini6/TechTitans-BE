@@ -1,6 +1,6 @@
 class AppointmentsController < ApplicationController
 
-	before_action :set_appointment, :set_timediff,:set_timeslot, only: [:show, :update, :destroy]
+	before_action :set_timeslot, :set_timediff, only: [:show, :update, :destroy]
 
  # GET /appointment
  def show
@@ -38,7 +38,7 @@ class AppointmentsController < ApplicationController
 
   	t=Date.today
   	twoweekdates = []
-  	days=string_day_to_array(Timeslot.where(:id => @timeslot).pluck(:day))
+  	days=string_day_to_array(Timeslot.where(:id => params[:timeslot_id]).pluck(:day))
   	i=0
 		while(i<14)
   		days.each do |d|
@@ -54,10 +54,9 @@ class AppointmentsController < ApplicationController
 
   def check_timeslot(date)
 
-  	@timeslot = params[:timeslot_id]
-  	c = Appointment.where(:timeslot_id => @timeslot).where(:date => params[:date]).count
+  	c = Appointment.where(:timeslot_id => params[:timeslot_id]).where(:date => params[:date]).count
   	if (@timediff-c*15>=15)
-    	@appointment.BeginTime= Timeslot.find(@timeslot).pluck(BeginTime)+c*15.minutes#inmin do
+    	@appointment.BeginTime= Timeslot.find(params[:timeslot_id]).select(BeginTime)+c*15.minutes#inmin do
     	@appointment.EndTime= @appointment.BeginTime+15.minutes#do in min
     	return true
     else
@@ -65,18 +64,20 @@ class AppointmentsController < ApplicationController
     end
   end
 
-  def set_appointment
-  	@appointment = Appointment.find(params[:id])
+  def set_timeslot
+  	@timeslotid = params[:id]
   	#@appointment.BeginTime.strftime("%I:%M%p")
   	#@appointment.EndTime.strftime("%I:%M%p")
   end
 
   def set_timediff
-  	@timediff=TimeDifference.between(params[:start_time], params[:end_time]).in_minutes
+  	start = Timeslot.where(:id => @timeslotid).select(:BeginTime)
+  	end_time = Timeslot.where(:id => @timeslotid).select(:EndTime)
+  	@timediff=TimeDifference.between(start , end_time).to_minutes
   end
 
   def string_day_to_array(day)
-  	day = day.split('')
+  	d = day.split('')
   	days = []
   	if d[0] == 1 then days.push("1")
   	end    
@@ -93,8 +94,4 @@ class AppointmentsController < ApplicationController
   	return days
   end
 
-  def set_timeslot
-  	@timeslot= params[:timeslot_id]
-  end
 end
-
