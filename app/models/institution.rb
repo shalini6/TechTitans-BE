@@ -9,9 +9,8 @@ class Institution < ApplicationRecord
 
   def get_details
     details = {}
-    details['institution'] = self.as_json
-    details['clinicals'] = self.clinicals
-    details['location'] = location
+    details['institution'] = self.as_json(except: [:created_at, :updated_at, :rating, :password_digest])
+    details['location'] = location(except: [:created_at, :updated_at])
     details
   end
 end

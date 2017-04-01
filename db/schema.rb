@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170330042702) do
+ActiveRecord::Schema.define(version: 20170331140124) do
 
   create_table "appointments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "patient_id"
@@ -32,6 +32,21 @@ ActiveRecord::Schema.define(version: 20170330042702) do
     t.integer  "department"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+  end
+
+  create_table "conversations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "sender_id"
+    t.integer  "recipient_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.index ["recipient_id"], name: "index_conversations_on_recipient_id", using: :btree
+    t.index ["sender_id"], name: "index_conversations_on_sender_id", using: :btree
+  end
+
+  create_table "diagnostics", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "diseases", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -62,8 +77,14 @@ ActiveRecord::Schema.define(version: 20170330042702) do
     t.datetime "updated_at",     null: false
   end
 
-  create_table "pathologies", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string "name"
+  create_table "messages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.text     "body",            limit: 65535
+    t.integer  "conversation_id"
+    t.integer  "user_id"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.index ["conversation_id"], name: "index_messages_on_conversation_id", using: :btree
+    t.index ["user_id"], name: "index_messages_on_user_id", using: :btree
   end
 
   create_table "patients", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -82,15 +103,13 @@ ActiveRecord::Schema.define(version: 20170330042702) do
     t.index ["mobile"], name: "index_patients_on_mobile", using: :btree
   end
 
-  create_table "radiologies", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string "name"
-  end
-
   create_table "rates", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string  "service"
-    t.integer "service_id"
-    t.integer "institution_id"
-    t.integer "rate"
+    t.string   "service"
+    t.integer  "service_id"
+    t.integer  "institution_id"
+    t.integer  "rate"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
   create_table "timeslots", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -105,7 +124,17 @@ ActiveRecord::Schema.define(version: 20170330042702) do
     t.index ["institution_id"], name: "index_timeslots_on_institution_id", using: :btree
   end
 
+  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "type"
+    t.integer  "uid"
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   add_foreign_key "appointments", "patients"
   add_foreign_key "appointments", "timeslots"
+  add_foreign_key "messages", "conversations"
+  add_foreign_key "messages", "users"
   add_foreign_key "timeslots", "institutions"
 end

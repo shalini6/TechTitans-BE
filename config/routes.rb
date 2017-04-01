@@ -10,5 +10,8 @@ Rails.application.routes.draw do
   	get '/appointments', to: 'patients#appointment'
   end
 
+ resources :timeslots
+ resources :rates
+  
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
