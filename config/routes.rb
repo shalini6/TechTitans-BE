@@ -1,15 +1,17 @@
 Rails.application.routes.draw do
-  
-post '/signup', to: 'institutions#create' 
+
+post '/signup', to: 'institutions#create'
 resources :institutions do
   	get '/history' , to: 'institutions#history'
     resources :locations
     resources :clinicals
-  end
+  	get '/login', to: 'institutions#login'
+end
   resources :appointments
 
   resources :patients do
   	get '/appointments', to: 'patients#appointment'
+  	get '/login', to: 'patients#login'
   end
 
  get 'search/institutions', to: 'search#institutions'
@@ -18,7 +20,7 @@ resources :institutions do
  resources :timeslots
  resources :rates
 
- 
+
  resources :videos
 
  resources :videos

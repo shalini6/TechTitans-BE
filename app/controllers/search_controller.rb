@@ -37,6 +37,9 @@ class SearchController < ApplicationController
 					obj['id'] = c.id
 					obj['location'] = insti.location.as_json(except: [:created_at, :updated_at, :institution_id, :id])
 					obj['department'] = insti.clinicals.select(:department).where(:speciality_name => sp.speciality_name)
+					obj['department'].each do |dept|
+						dept = department_itos(dept)
+					end
 					results << obj
 				end
 			end
@@ -56,6 +59,9 @@ class SearchController < ApplicationController
 					obj['id'] = insti.id
 					obj['location'] = insti.location.as_json(except: [:created_at, :updated_at, :institution_id, :id])
 					obj['department'] = insti.clinicals.select(:department).where(:speciality_name => disease.speciality)
+					obj['department'].each do |dept|
+						dept = department_itos(dept)
+					end
 					results << obj
 				end
 			end
@@ -80,5 +86,17 @@ class SearchController < ApplicationController
 		end
 
 	render json: results
+	end
+
+	def department_itos(dept)
+	 department = ""
+	 case dept
+	  when 0 then department = "AYURVEDIC"
+	  when 1 then department = "YOGA"
+	  when 2 then department = "UNANI"
+	  when 3 then department = "SIDDHA"
+	  when 4 then department = "HOMEOPATHY"
+	 end
+	return department
 	end
 end

@@ -2,6 +2,22 @@ class InstitutionsController < ApplicationController
   before_action :set_institution, only: [:show, :update, :destroy]
   wrap_parameters format: [:json], include: Institution.attribute_names + [:password, :password_confirmation]
 
+  def login
+    response = {}
+    i =Institution.find_by(:user_id => params[:institution_id])
+    if i
+      if i.authenticate(params[:password])
+        response['message'] = "Success"
+      else
+        response['message'] = "Invalid Password"
+      end
+    else
+      response['message'] = "Invalid Username"
+    end
+    render json: response
+  end
+
+
   # GET /institutions
   def index
     @institutions = Institution.all
@@ -24,10 +40,10 @@ class InstitutionsController < ApplicationController
 
     if @institution.save
       render json: @institution, status: :created
-    else    
+    else
      render json:  @institution.errors, status: :unprocessable_entity
     end
- 
+
   end
 
   # PATCH/PUT /institutions/1
@@ -51,10 +67,10 @@ class InstitutionsController < ApplicationController
     timeslotsid.each do |d|
       a = (Appointment.where(:timeslot_id => d['id']).order('date desc')).as_json(except: [:timeslot_id, :created_at, :updated_at])
       a.each do |s|
-        
-        if s['date']>Date.today 
+
+        if s['date']>Date.today
           s['status']=1
-        elsif s['date']<Date.today 
+        elsif s['date']<Date.today
           s['status']=0
         elsif s['date']=Date.today and s['BeginTime'].strftime("%H:%M:%S")>Time.now.strftime("%H:%M:%S")
           s['status']=1
