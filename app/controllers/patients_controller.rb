@@ -39,6 +39,23 @@ class PatientsController < ApplicationController
     @patient.destroy
   end
 
+  #Appointment history
+  def appointment
+    @appointments = Appointment.where(:patient_id => params[:patient_id]).as_json(except: [:timeslot_id, :created_at, :updated_at])
+    @appointments.each do |d|
+      if d['date']>Date.today 
+          d['status']=1
+        elsif d['date']<Date.today 
+          d['status']=0
+        elsif d['date']=Date.today and d['BeginTime'].strftime("%H:%M:%S")>Time.now.strftime("%H:%M:%S")
+          d['status']=1
+        else
+          d['status']=0
+        end
+    end
+      render json: @appointments
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.

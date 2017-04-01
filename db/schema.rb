@@ -105,6 +105,7 @@ ActiveRecord::Schema.define(version: 20170401091357) do
     t.index ["institution_id"], name: "index_timeslots_on_institution_id", using: :btree
   end
 
+<<<<<<< HEAD
   create_table "videos", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "clinical_id"
     t.integer  "patient_id"
@@ -115,6 +116,8 @@ ActiveRecord::Schema.define(version: 20170401091357) do
     t.index ["patient_id"], name: "index_videos_on_patient_id", using: :btree
   end
 
+=======
+>>>>>>> d2304d56da8fce0ca16e8c77c78dde252ef6391b
   add_foreign_key "appointments", "patients"
   add_foreign_key "appointments", "timeslots"
   add_foreign_key "timeslots", "institutions"

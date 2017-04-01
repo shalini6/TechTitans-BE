@@ -1,6 +1,7 @@
 class TimeslotsController < ApplicationController
 before_action :set_timeslot, only: [:show, :update, :destroy]
 
+
 #GET /timeslots
 def show
   render json: @timeslot
@@ -40,6 +41,7 @@ end
 def destroy
   @timeslot.destroy
 end        
+
 private
   # Use callbacks to share common setup or constraints between actions.
   def set_timeslot
