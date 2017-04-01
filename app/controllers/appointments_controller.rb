@@ -71,10 +71,10 @@ class AppointmentsController < ApplicationController
   end
 
   def set_timediff
-  	start = Timeslot.where(:id => @timeslotid).select(:BeginTime)
-  	end_time = Timeslot.where(:id => @timeslotid).select(:EndTime)
-  	@timediff=TimeDifference.between(start , end_time).to_minutes
-  end
+  	start_time = Timeslot.select(:BeginTime).where(:id => @timeslotid)
+  	end_time = Timeslot.select(:EndTime).where(:id => @timeslotid)
+  	@timediff= TimeDifference.between(start_time,end_time).in_minutes
+  	 end
 
   def string_day_to_array(day)
   	d = day.split('')
