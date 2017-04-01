@@ -51,8 +51,7 @@ class InstitutionsController < ApplicationController
     timeslotsid.each do |d|
       a = (Appointment.where(:timeslot_id => d['id']).order('date desc')).as_json(except: [:timeslot_id, :created_at, :updated_at])
       a.each do |s|
-        puts(Time.now.strftime("%H:%M:%S"))
-        puts(s['BeginTime'].strftime("%H:%M:%S"))
+        
         if s['date']>Date.today 
           s['status']=1
         elsif s['date']<Date.today 
