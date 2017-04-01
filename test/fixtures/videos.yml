@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  clinical: one
+  patient: one
+  room_key: MyString
+
+two:
+  clinical: two
+  patient: two
+  room_key: MyString
