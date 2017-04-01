@@ -1,5 +1,6 @@
 class TimeslotsController < ApplicationController
 
+
 private
  def string_day_to_array(day)
   day = day.split('')

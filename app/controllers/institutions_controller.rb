@@ -44,6 +44,29 @@ class InstitutionsController < ApplicationController
     @institution.destroy
   end
 
+  #Appointment history of institutions
+  def history
+    history = []
+    timeslotsid= Institution.find(params[:institution_id]).timeslots
+    timeslotsid.each do |d|
+      a = (Appointment.where(:timeslot_id => d['id']).order('date desc')).as_json
+      a.each do |s|
+        
+        if s['date']>Date.today 
+          s['status']=1
+        elsif s['date']<Date.today 
+          s['status']=0
+        elsif s['date']=Date.today and s['BeginTime'].strftime("%I:%M%p")>Time.now.strftime("%I:%M%p")
+          s['status']=1
+        else
+          s['status']=0
+        end
+        history.push(s)
+      end
+    end
+    render json: history
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
