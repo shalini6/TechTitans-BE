@@ -1,6 +1,6 @@
 class AppointmentsController < ApplicationController
 
-	before_action :set_timeslotid, :set_timediff, only: [:show, :update, :destroy]
+	before_action :set_timeslotid, only: [:show, :update, :destroy]
 
  # GET /appointment
  def show
@@ -15,11 +15,16 @@ class AppointmentsController < ApplicationController
 
   #Create appointment
   def create
+  	if check_timeslot(params[:date],params[:timeslot_id])
+  		@a=Appointment.new(:patient_id =>params[:patient_id],:timeslot_id =>params[:timeslot_id],:BeginTime=>@Begin,:EndTime=>@End,:date =>params[:date],:mode =>params[:mode])
 
-  	if @appointment.save
-  		render json: @appointment, status: :created
+  		if @a.save
+  			render json: @a, status: :created
+  		else
+  			render json:  @a.errors, status: :unprocessable_entity
+  		end
   	else
-  	render json: {
+  		render json: {
   		error: "No Available Appointments!",
   		status: 400
   		}, status: 400
@@ -39,7 +44,7 @@ class AppointmentsController < ApplicationController
   	14.times do
   		days.each do |day|
 				if t.wday == day.to_i
-					if check_timeslot(t)
+					if check_timeslot(t,params[:id])
 						twoweekdates.push(t)
 					end
 				end
@@ -49,12 +54,12 @@ class AppointmentsController < ApplicationController
   	return twoweekdates
   end
 
-  def check_timeslot(d)
-
-  	c =Appointment.where(:timeslot_id => params[:id]).where(:date => d).count
-  	  	
-  	 if (@timediff-c*15>=15)
-  	  a = Timeslot.select(:BeginTime).find(params[:id]).as_json
+  def check_timeslot(d,id)
+  	
+  	c =Appointment.where(:timeslot_id => id).where(:date => d).count
+  	  	set_timediff(id)
+  	 if (@timediff.to_i-c*15>=15)
+  	  a = Timeslot.select(:BeginTime).find(id).as_json
 			@Begin = a['BeginTime']+c*15.minutes
     	@End= @Begin+15.minutes
     	return true
@@ -70,14 +75,13 @@ class AppointmentsController < ApplicationController
   	#@appointment.EndTime.strftime("%I:%M%p")
   end
 
-  def set_timediff
-  	start_time = Timeslot.select(:BeginTime).find(@timeslotid).as_json
-  	end_time = Timeslot.select(:EndTime).find(@timeslotid).as_json
+  def set_timediff(id)
+  	start_time = Timeslot.select(:BeginTime).find(id).as_json
+  	end_time = Timeslot.select(:EndTime).find(id).as_json
   	seconds_diff = end_time['EndTime'] - start_time['BeginTime']
   	@timediff = (seconds_diff / 60).round
   	seconds_diff -= @timediff * 60
   	seconds = seconds_diff
-  	puts(@timediff)
   end
 
   def string_day_to_array(day)
@@ -97,9 +101,5 @@ class AppointmentsController < ApplicationController
   	end
   	return days
   end
-
-  # def set_appointment
-  # 	@appointment=Appointment.new(:patient_id => )
-  # end
 
 end
