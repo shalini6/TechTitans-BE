@@ -4,6 +4,6 @@ class RemoveDoctorExperience < ActiveRecord::Migration[5.0]
   end
 
   def down
-  	add_column :clinicals, :experience
+  	add_column :clinicals, :experience, :integer
   end
 end

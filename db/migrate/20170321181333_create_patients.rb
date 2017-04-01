@@ -14,9 +14,10 @@ class CreatePatients < ActiveRecord::Migration[5.0]
       t.string 'aadhar'
       t.timestamps
     end
-
-    add_index('patients', 'mobile')
   end
+end
+  
 
   
-end
+  
+
