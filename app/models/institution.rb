@@ -4,6 +4,7 @@ class Institution < ApplicationRecord
   has_one :location
   has_many :clinicals
   has_many :appointments
+  has_many :rates
   has_many :patients, through: :appointments
   has_many :timeslots
 

@@ -10,10 +10,16 @@ Rails.application.routes.draw do
   	get '/appointments', to: 'patients#appointment'
   end
 
+ get 'search/institutions', to: 'search#institutions'
+ get 'search/doctors', to: 'search#doctors'
+ get 'search/services', to: 'search#services'
  resources :timeslots
  resources :rates
 
  
  resources :videos
+
+ resources :videos
+  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
 end
