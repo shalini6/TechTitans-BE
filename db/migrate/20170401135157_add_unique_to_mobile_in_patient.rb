@@ -3,6 +3,6 @@ class AddUniqueToMobileInPatient < ActiveRecord::Migration[5.0]
    add_index :patients, :mobile , unique: true 
   end
   def down
-   remove_index :patients, :mobile, unique: true
-   end
+   remove_index :patients, :mobile
+  end
 end
