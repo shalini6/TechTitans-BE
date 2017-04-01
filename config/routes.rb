@@ -6,10 +6,13 @@ resources :institutions do
     resources :locations
     resources :clinicals
   end
-  resources :appointments
+  resources :appointments do
+  	get '/receipt', to: 'appointments#receipt'
+  end
 
   resources :patients do
   	get '/appointments', to: 'patients#appointment'
+
   end
 
  get 'search/institutions', to: 'search#institutions'
