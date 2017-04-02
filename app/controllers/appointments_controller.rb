@@ -31,6 +31,36 @@ class AppointmentsController < ApplicationController
   	end
   end
 
+  def receipt
+  	app_id=params[:appointment_id]
+  	obj ={}
+  	a = Appointment.find(app_id)
+  	patient = Patient.find(a[:patient_id])
+  	timeslot = Timeslot.find(a[:timeslot_id])
+  	doctor = Clinical.find(timeslot[:service_id])
+  	ins = Institution.find(timeslot[:institution_id])
+  	obj['first_name']=patient[:first_name]
+  	obj['last_name']=patient[:last_name]
+  	obj['mobile']=patient[:mobile]
+  	obj['email']=patient[:email]
+  	if timeslot[:service] == "d"
+  		obj['doctor_name']="Diagnostic Service"
+  	else
+  		obj['doctor_name']=doctor[:doctor_name]
+  	end
+		obj['department']=doctor[:department]
+		if timeslot[:service] == "d"
+  		obj['speciality_name']="NIL"
+  	else
+  		obj['speciality_name']=doctor[:speciality_name] 
+  	end
+  	obj['institution_name']=ins[:name]
+  	obj['rate']= Rate.where(:service => timeslot[:service]).where(:service_id => timeslot[:service_id]).find_by(:institution_id => timeslot[:institution_id])
+  	obj['BeginTime']= a[:BeginTime]
+  	obj['EndTime']= a[:EndTime]
+  	render json: obj
+	end
+
   #def history
 
   private

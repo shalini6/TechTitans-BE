@@ -2,6 +2,21 @@ class PatientsController < ApplicationController
   before_action :set_patient, only: [:show, :update, :destroy]
   wrap_parameters format: [:json], include: Patient.attribute_names + [:password, :password_confirmation]
 
+  def login
+    response = {}
+    p = Patient.find_by(:mobile => params[:patient_id])
+    if p
+      if p.authenticate(params[:password])
+        response['message'] = "Success"
+      else
+        response['message'] = "Invalid Password"
+      end
+    else
+      response['message'] = "Invalid Username"
+    end
+    render json: response
+  end
+
   # GET /patient
   def show
     render json: @patient
@@ -43,9 +58,9 @@ class PatientsController < ApplicationController
   def appointment
     @appointments = Appointment.where(:patient_id => params[:patient_id]).as_json(except: [:timeslot_id, :created_at, :updated_at])
     @appointments.each do |d|
-      if d['date']>Date.today 
+      if d['date']>Date.today
           d['status']=1
-        elsif d['date']<Date.today 
+        elsif d['date']<Date.today
           d['status']=0
         elsif d['date']=Date.today and d['BeginTime'].strftime("%H:%M:%S")>Time.now.strftime("%H:%M:%S")
           d['status']=1

@@ -90,10 +90,8 @@ ActiveRecord::Schema.define(version: 20170402045033) do
     t.string   "city"
     t.string   "state"
     t.integer  "pin"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
-    t.float    "latitude",       limit: 24
-    t.float    "longitude",      limit: 24
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
   create_table "messages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
