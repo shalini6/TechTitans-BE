@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170402045033) do
+ActiveRecord::Schema.define(version: 20170402071222) do
 
   create_table "appointments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "patient_id"
@@ -33,6 +33,15 @@ ActiveRecord::Schema.define(version: 20170402045033) do
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.string   "password"
+  end
+
+  create_table "conversations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "sender_id"
+    t.integer  "recipient_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.index ["recipient_id"], name: "index_conversations_on_recipient_id", using: :btree
+    t.index ["sender_id"], name: "index_conversations_on_sender_id", using: :btree
   end
 
   create_table "diagnostics", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -81,8 +90,20 @@ ActiveRecord::Schema.define(version: 20170402045033) do
     t.string   "city"
     t.string   "state"
     t.integer  "pin"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.float    "latitude",       limit: 24
+    t.float    "longitude",      limit: 24
+  end
+
+  create_table "messages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.text     "body",            limit: 65535
+    t.integer  "conversation_id"
+    t.integer  "sender"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.index ["conversation_id"], name: "index_messages_on_conversation_id", using: :btree
+    t.index ["sender"], name: "index_messages_on_sender", using: :btree
   end
 
   create_table "patients", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -122,12 +143,21 @@ ActiveRecord::Schema.define(version: 20170402045033) do
     t.index ["institution_id"], name: "index_timeslots_on_institution_id", using: :btree
   end
 
+  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "client"
+    t.integer  "uid"
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "videos", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "clinical_id"
     t.integer  "patient_id"
     t.string   "room_key"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.text     "prescription", limit: 65535
     t.index ["clinical_id"], name: "index_videos_on_clinical_id", using: :btree
     t.index ["patient_id"], name: "index_videos_on_patient_id", using: :btree
   end
@@ -135,6 +165,8 @@ ActiveRecord::Schema.define(version: 20170402045033) do
   add_foreign_key "appointments", "patients"
   add_foreign_key "appointments", "timeslots"
   add_foreign_key "filter_locations", "institutions"
+  add_foreign_key "messages", "conversations"
+  add_foreign_key "messages", "users", column: "sender"
   add_foreign_key "timeslots", "institutions"
   add_foreign_key "videos", "clinicals"
   add_foreign_key "videos", "patients"

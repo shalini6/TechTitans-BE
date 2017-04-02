@@ -8,7 +8,7 @@ before_action :set_video, only: [:show, :update, :destroy]
   end
 
 # When doctor click the start button
- # PATCH/PUT /patient
+ # PATCH/PUT /video
   def update
     if @video.update(video_params)
       render json: @video
@@ -18,7 +18,7 @@ before_action :set_video, only: [:show, :update, :destroy]
   end
 
 #When any of the two click finish 
- # DELETE /patient
+ # DELETE /video
   def destroy
     @video.destroy
   end
@@ -32,6 +32,6 @@ before_action :set_video, only: [:show, :update, :destroy]
 
   # Only allow a trusted parameter "white list" through.
   def video_params
-    params.fetch(:video, {}).permit(:clinicals_id, :patients_id, :room_key)
+    params.fetch(:video, {}).permit(:clinicals_id, :patients_id, :room_key, :prescription)
   end
 end
