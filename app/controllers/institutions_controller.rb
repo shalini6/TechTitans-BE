@@ -8,6 +8,7 @@ class InstitutionsController < ApplicationController
     if i
       if i.authenticate(params[:password])
         response['message'] = "Success"
+        response['id'] = i.id
       else
         response['message'] = "Invalid Password"
       end
