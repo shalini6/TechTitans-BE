@@ -55,11 +55,13 @@ class AppointmentsController < ApplicationController
   		obj['speciality_name']=doctor[:speciality_name] 
   	end
   	obj['institution_name']=ins[:name]
-  	x = Rate.select('cost').where(:service => timeslot[:service]).where(:service_id => timeslot[:service_id]).find_by(:institution_id => timeslot[:institution_id]).as_json
-  	obj['rate'] = x['cost']
+  	x = Rate.select('rate').where(:service => timeslot[:service]).where(:service_id => timeslot[:service_id]).find_by(:institution_id => timeslot[:institution_id]).as_json
+  	obj['rate'] = x['rate']
     obj['BeginTime']= a[:BeginTime]
   	obj['EndTime']= a[:EndTime]
-  	render json: obj
+    obj['prescription']= Video.where(:clinical_id => doctor['id']).where(:patient_id => a[:patient_id]).pluck(:prescription).first
+  	puts obj
+    render json: obj
 	end
 
   #def history

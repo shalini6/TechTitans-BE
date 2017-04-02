@@ -4,7 +4,11 @@ before_action :set_video, only: [:show, :update, :destroy]
 #when patient click start button  
 # GET /video
   def show
-    render json: @video
+    response = @video.as_json
+    @video.room_key = nil
+    @video.save
+    render json: response
+
   end
 
 # When doctor click the start button

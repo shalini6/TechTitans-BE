@@ -5,6 +5,8 @@ class PatientsController < ApplicationController
   def login
     response = {}
     p = Patient.find_by(:mobile => params[:patient_id])
+    puts "888888"
+    puts p
     if p
       if p.authenticate(params[:password])
         response['message'] = "Success"
@@ -15,6 +17,8 @@ class PatientsController < ApplicationController
     else
       response['message'] = "Invalid Username"
     end
+    puts "***********"
+    puts response
     render json: response
   end
 
