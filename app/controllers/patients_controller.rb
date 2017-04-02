@@ -39,7 +39,7 @@ class PatientsController < ApplicationController
     @patient = Patient.new(patient_params)
 
     if @patient.save
-      render json: @patient, status: :created
+      render json: @patient.as_json, status: :created
     else
       render json: @patient.errors, status: :unprocessable_entity
     end
