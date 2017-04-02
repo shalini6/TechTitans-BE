@@ -48,7 +48,7 @@ class AppointmentsController < ApplicationController
   	else
   		obj['doctor_name']=doctor[:doctor_name]
   	end
-		obj['department']=doctor[:department]
+		obj['department']=department_itos(doctor[:department])
 		if timeslot[:service] == "d"
   		obj['speciality_name']="NIL"
   	else
@@ -130,6 +130,18 @@ class AppointmentsController < ApplicationController
   	if d[5] == "1" then days.push("6")
   	end
   	return days
+  end
+
+  def department_itos(dept)
+   department = ""
+   case dept
+    when 0 then department = "AYURVEDIC"
+    when 1 then department = "YOGA"
+    when 2 then department = "UNANI"
+    when 3 then department = "SIDDHA"
+    when 4 then department = "HOMEOPATHY"
+   end
+    return department
   end
 
 end
