@@ -8,6 +8,7 @@ class PatientsController < ApplicationController
     if p
       if p.authenticate(params[:password])
         response['message'] = "Success"
+        response['id'] = p.id
       else
         response['message'] = "Invalid Password"
       end

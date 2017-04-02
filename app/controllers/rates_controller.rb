@@ -44,7 +44,7 @@ private
 
   # Only allow a trusted parameter "white list" through.
   def rate_params
-    params.fetch(:rate, {}).permit(:service, :service_id, :institution_id, :rate)
+    params.fetch(:rate, {}).permit(:service, :service_id, :institution_id, :cost)
   end
 
 end
