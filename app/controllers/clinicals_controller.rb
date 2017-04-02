@@ -98,6 +98,6 @@ end
 
   # Only allow a trusted parameter "white list" through.
   def clinical_params
-    params.fetch(:clinical, {}).permit(:speciality_name, :doctor_name, :department, services: [:speciality_name, :doctor_name, :department])
+    params.fetch(:clinical, {}).permit(:speciality_name, :doctor_name, :department,:password, services: [:speciality_name, :doctor_name, :department])
   end
 end
